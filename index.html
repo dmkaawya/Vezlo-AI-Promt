@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Vezlo AI Prompt</title>
+<meta name="description" content="Discover, share, and use premium AI prompts for ChatGPT, Midjourney, Photography, and Web Development.">
+<meta name="theme-color" content="#060610">
+<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiVmV6bG8gQUkgUHJvbXB0Iiwic2hvcnRfbmFtZSI6IlZlemxvIiwic3RhcnRfdXJsIjoiLiIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiMwNjA2MTAiLCJ0aGVtZV9jb2xvciI6IiMwMGZmYWEifQ==">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+/* ============================================
+   CSS RESET & BASE
+   ============================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px;-webkit-tap-highlight-color:transparent}
+body{font-family:'DM Sans',sans-serif;line-height:1.6;overflow-x:hidden;min-height:100vh;
+  background:var(--bg-primary);color:var(--text-primary);transition:background .4s,color .4s}
+a{text-decoration:none;color:inherit;transition:color .2s}
+button{cursor:pointer;font-family:inherit;border:none;outline:none;background:none}
+img{max-width:100%;display:block}
+ul{list-style:none}
+input,textarea,select{font-family:inherit;font-size:inherit;outline:none;border:none}
+
+/* ============================================
+   CSS VARIABLES — DARK THEME (Default)
+   ============================================ */
+:root{
+  --bg-primary:#060610;
+  --bg-secondary:#0c0c1d;
+  --bg-card:#111128;
+  --bg-card-hover:#191940;
+  --bg-input:#0e0e22;
+  --text-primary:#eaeaf2;
+  --text-secondary:#8888a8;
+  --text-muted:#55556e;
+  --accent:#00ffaa;
+  --accent-rgb:0,255,170;
+  --accent2:#ffd700;
+  --accent2-rgb:255,215,0;
+  --danger:#ff3366;
+  --danger-rgb:255,51,102;
+  --info:#00c9db;
+  --info-rgb:0,201,219;
+  --border:#1c1c3a;
+  --border-light:#2a2a50;
+  --shadow:0 4px 24px rgba(0,0,0,.5);
+  --shadow-lg:0 12px 48px rgba(0,0,0,.6);
+  --radius:12px;
+  --radius-lg:20px;
+  --nav-height:70px;
+  --glow-accent:0 0 15px rgba(var(--accent-rgb),.4),0 0 40px rgba(var(--accent-rgb),.15);
+  --glow-danger:0 0 15px rgba(var(--danger-rgb),.4),0 0 40px rgba(var(--danger-rgb),.15);
+  --gradient-hero:linear-gradient(135deg,#060610 0%,#0d1a2d 40%,#0a1628 70%,#060610 100%);
+  --gradient-card:linear-gradient(145deg,var(--bg-card) 0%,rgba(17,17,40,.6) 100%);
+}
+
+/* ============================================
+   CSS VARIABLES — LIGHT THEME
+   ============================================ */
+[data-theme="light"]{
+  --bg-primary:#f2f1eb;
+  --bg-secondary:#ffffff;
+  --bg-card:#ffffff;
+  --bg-card-hover:#f0efe8;
+  --bg-input:#f5f5f0;
+  --text-primary:#1a1a2e;
+  --text-secondary:#55556e;
+  --text-muted:#888898;
+  --accent:#00b880;
+  --accent-rgb:0,184,128;
+  --accent2:#b8960a;
+  --accent2-rgb:184,150,10;
+  --danger:#cc2952;
+  --danger-rgb:204,41,82;
+  --info:#0090a0;
+  --info-rgb:0,144,160;
+  --border:#d8d8e0;
+  --border-light:#e8e8ee;
+  --shadow:0 4px 24px rgba(0,0,0,.08);
+  --shadow-lg:0 12px 48px rgba(0,0,0,.12);
+  --gradient-hero:linear-gradient(135deg,#f2f1eb 0%,#e0e8f0 40%,#dce4ee 70%,#f2f1eb 100%);
+  --gradient-card:linear-gradient(145deg,#ffffff 0%,rgba(255,255,255,.8) 100%);
+}
+
+/* ============================================
+   SCROLL PROGRESS BAR
+   ============================================ */
+#scroll-progress{position:fixed;top:0;left:0;height:3px;width:0%;
+  background:linear-gradient(90deg,var(--accent),var(--accent2),var(--danger));
+  z-index:10001;transition:width .05s linear;pointer-events:none}
+
+/* ============================================
+   NAVIGATION
+   ============================================ */
+#main-nav{position:fixed;top:0;left:0;right:0;height:var(--nav-height);
+  background:rgba(6,6,16,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);z-index:1000;transition:background .4s,border .4s}
+[data-theme="light"] #main-nav{background:rgba(242,241,235,.88)}
+.nav-inner{max-width:1280px;margin:0 auto;height:100%;display:flex;align-items:center;
+  justify-content:space-between;padding:0 24px;gap:16px}
+.nav-logo{font-family:'Orbitron',sans-serif;font-weight:800;font-size:1.25rem;
+  color:var(--accent);letter-spacing:1px;white-space:nowrap}
+.nav-logo span{color:var(--text-primary);font-weight:500}
+.nav-links{display:flex;align-items:center;gap:8px}
+.nav-links a{padding:8px 16px;border-radius:8px;font-weight:500;font-size:.9rem;
+  color:var(--text-secondary);transition:all .25s;position:relative}
+.nav-links a:hover,.nav-links a.active{color:var(--accent);background:rgba(var(--accent-rgb),.08)}
+.nav-actions{display:flex;align-items:center;gap:10px}
+.btn-add-prompt{background:var(--accent);color:#060610;font-weight:700;font-size:.85rem;
+  padding:8px 18px;border-radius:8px;transition:all .25s;white-space:nowrap}
+.btn-add-prompt:hover{box-shadow:var(--glow-accent);transform:translateY(-1px)}
+.theme-toggle{width:44px;height:24px;border-radius:12px;background:var(--border-light);
+  position:relative;cursor:pointer;transition:background .3s}
+.theme-toggle::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;
+  border-radius:50%;background:var(--accent);transition:transform .3s}
+[data-theme="light"] .theme-toggle::after{transform:translateX(20px)}
+.nav-hamburger{display:none;flex-direction:column;gap:5px;padding:8px;cursor:pointer}
+.nav-hamburger span{display:block;width:22px;height:2px;background:var(--text-primary);
+  transition:all .3s;border-radius:2px}
+.mobile-menu{display:none;position:fixed;top:var(--nav-height);left:0;right:0;bottom:0;
+  background:var(--bg-primary);z-index:999;padding:32px 24px;flex-direction:column;gap:8px;
+  opacity:0;transform:translateY(-10px);transition:opacity .3s,transform .3s}
+.mobile-menu.open{display:flex;opacity:1;transform:translateY(0)}
+.mobile-menu a{padding:16px;border-radius:12px;font-size:1.1rem;font-weight:600;
+  color:var(--text-secondary);transition:all .25s}
+.mobile-menu a:hover,.mobile-menu a.active{color:var(--accent);background:rgba(var(--accent-rgb),.08)}
+.mobile-menu .btn-add-prompt{display:inline-block;text-align:center;margin-top:16px;padding:14px}
+
+/* ============================================
+   HERO SECTION
+   ============================================ */
+.hero{min-height:85vh;display:flex;align-items:center;justify-content:center;
+  background:var(--gradient-hero);position:relative;overflow:hidden;padding:120px 24px 80px}
+.hero-bg-orb{position:absolute;border-radius:50%;filter:blur(120px);opacity:.3;
+  animation:orbFloat 12s ease-in-out infinite;pointer-events:none}
+.hero-bg-orb:nth-child(1){width:500px;height:500px;background:var(--accent);top:-10%;left:-10%;animation-delay:0s}
+.hero-bg-orb:nth-child(2){width:400px;height:400px;background:var(--danger);bottom:-10%;right:-10%;animation-delay:4s}
+.hero-bg-orb:nth-child(3){width:300px;height:300px;background:var(--accent2);top:40%;right:20%;animation-delay:8s}
+@keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(30px,-40px) scale(1.1)}}
+.hero-content{position:relative;z-index:2;text-align:center;max-width:800px}
+.hero-badge{display:inline-block;padding:8px 20px;border-radius:50px;font-size:.8rem;
+  font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);
+  border:1px solid rgba(var(--accent-rgb),.3);background:rgba(var(--accent-rgb),.06);
+  margin-bottom:28px}
+.hero-title{font-family:'Orbitron',sans-serif;font-size:clamp(2rem,6vw,3.8rem);
+  font-weight:900;line-height:1.15;margin-bottom:20px;color:var(--text-primary)}
+.hero-title .accent{color:var(--accent)}
+.hero-typewrap{display:inline;min-height:1.2em}
+.hero-typing{color:var(--accent2);border-right:3px solid var(--accent2);
+  animation:cursorBlink .7s step-end infinite;padding-right:2px}
+@keyframes cursorBlink{50%{border-color:transparent}}
+.hero-desc{font-size:clamp(1rem,2.5vw,1.2rem);color:var(--text-secondary);
+  max-width:600px;margin:0 auto 36px;line-height:1.7}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn-primary{background:var(--accent);color:#060610;font-weight:700;font-size:1rem;
+  padding:14px 32px;border-radius:10px;transition:all .3s;display:inline-flex;align-items:center;gap:8px}
+.btn-primary:hover{box-shadow:var(--glow-accent);transform:translateY(-2px)}
+.btn-outline{border:2px solid var(--border-light);color:var(--text-primary);font-weight:600;
+  font-size:1rem;padding:14px 32px;border-radius:10px;transition:all .3s;
+  display:inline-flex;align-items:center;gap:8px}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent);background:rgba(var(--accent-rgb),.06)}
+
+/* ============================================
+   SECTIONS COMMON
+   ============================================ */
+.section{padding:80px 24px;max-width:1280px;margin:0 auto}
+.section-header{text-align:center;margin-bottom:48px}
+.section-header h2{font-family:'Orbitron',sans-serif;font-size:clamp(1.5rem,4vw,2.4rem);
+  font-weight:800;margin-bottom:12px}
+.section-header p{color:var(--text-secondary);max-width:560px;margin:0 auto;font-size:1.05rem}
+.section-header .accent-line{width:60px;height:3px;background:var(--accent);margin:16px auto 0;
+  border-radius:2px}
+
+/* ============================================
+   CATEGORIES
+   ============================================ */
+.categories-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.cat-card{background:var(--gradient-card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:28px 20px;text-align:center;cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
+.cat-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(var(--accent-rgb),.08),transparent);opacity:0;transition:opacity .3s}
+.cat-card:hover::before{opacity:1}
+.cat-card:hover{border-color:rgba(var(--accent-rgb),.4);transform:translateY(-4px);box-shadow:var(--glow-accent)}
+.cat-card i{font-size:2rem;color:var(--accent);margin-bottom:12px;position:relative;z-index:1}
+.cat-card h3{font-size:1rem;font-weight:700;margin-bottom:4px;position:relative;z-index:1}
+.cat-card span{font-size:.8rem;color:var(--text-muted);position:relative;z-index:1}
+
+/* ============================================
+   PROMPT CARDS GRID
+   ============================================ */
+.prompts-toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:28px}
+.search-box{flex:1;min-width:240px;position:relative}
+.search-box input{width:100%;padding:12px 16px 12px 44px;border-radius:10px;
+  background:var(--bg-input);border:1px solid var(--border);color:var(--text-primary);
+  font-size:.95rem;transition:border .25s}
+.search-box input:focus{border-color:var(--accent)}
+.search-box i{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--text-muted)}
+.sort-select{padding:12px 16px;border-radius:10px;background:var(--bg-input);
+  border:1px solid var(--border);color:var(--text-primary);font-size:.9rem;cursor:pointer}
+.filter-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.chip{padding:8px 18px;border-radius:50px;font-size:.82rem;font-weight:600;cursor:pointer;
+  border:1px solid var(--border);color:var(--text-secondary);transition:all .25s;background:transparent}
+.chip:hover,.chip.active{background:rgba(var(--accent-rgb),.12);border-color:var(--accent);color:var(--accent)}
+.prompts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:22px}
+.prompt-card{background:var(--gradient-card);border:1px solid var(--border);border-radius:var(--radius-lg);
+  overflow:hidden;cursor:pointer;transition:transform .3s,box-shadow .3s,border-color .3s;
+  transform-style:preserve-3d;perspective:800px}
+.prompt-card:hover{border-color:rgba(var(--accent-rgb),.5);box-shadow:0 0 20px rgba(var(--accent-rgb),.2),0 8px 32px rgba(0,0,0,.3)}
+.card-images{display:grid;grid-template-columns:1fr 1fr;gap:2px;height:180px;overflow:hidden}
+.card-images img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.prompt-card:hover .card-images img{transform:scale(1.05)}
+.card-body{padding:18px 20px}
+.card-body h3{font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:700;margin-bottom:6px;
+  line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-caption{color:var(--text-secondary);font-size:.85rem;margin-bottom:10px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-snippet{font-size:.8rem;color:var(--text-muted);background:var(--bg-input);
+  padding:10px 12px;border-radius:8px;margin-bottom:14px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  border-left:3px solid var(--accent)}
+.card-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.card-tags span{font-size:.7rem;padding:4px 10px;border-radius:50px;font-weight:600;
+  background:rgba(var(--accent-rgb),.08);color:var(--accent);border:1px solid rgba(var(--accent-rgb),.15)}
+.card-footer{display:flex;align-items:center;justify-content:space-between}
+.card-stats{display:flex;gap:14px}
+.card-stats span{font-size:.78rem;color:var(--text-muted);display:flex;align-items:center;gap:4px}
+.card-stats i{font-size:.72rem}
+.fav-btn{font-size:1.2rem;color:var(--text-muted);transition:all .3s;padding:4px}
+.fav-btn.active{color:var(--danger)}
+.fav-btn:hover{transform:scale(1.2)}
+
+/* ============================================
+   SKELETON LOADING
+   ============================================ */
+.skeleton-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.skeleton-img{height:180px;background:linear-gradient(90deg,var(--bg-input) 25%,var(--border) 50%,var(--bg-input) 75%);
+  background-size:200% 100%;animation:shimmer 1.5s infinite}
+.skeleton-body{padding:18px 20px}
+.skeleton-line{height:14px;border-radius:6px;margin-bottom:10px;
+  background:linear-gradient(90deg,var(--bg-input) 25%,var(--border) 50%,var(--bg-input) 75%);
+  background-size:200% 100%;animation:shimmer 1.5s infinite}
+.skeleton-line.w70{width:70%}.skeleton-line.w50{width:50%}.skeleton-line.w90{width:90%}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* ============================================
+   PROMPT DETAIL PAGE
+   ============================================ */
+.detail-page{max-width:960px;margin:0 auto;padding:100px 24px 60px}
+.detail-back{display:inline-flex;align-items:center;gap:8px;color:var(--text-secondary);
+  font-weight:600;font-size:.9rem;margin-bottom:28px;cursor:pointer;transition:color .2s}
+.detail-back:hover{color:var(--accent)}
+.carousel{position:relative;border-radius:var(--radius-lg);overflow:hidden;margin-bottom:28px;
+  background:var(--bg-card);aspect-ratio:16/9}
+.carousel-track{display:flex;transition:transform .4s ease;height:100%}
+.carousel-track img{min-width:100%;height:100%;object-fit:cover}
+.carousel-btn{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;
+  border-radius:50%;background:rgba(0,0,0,.5);color:#fff;font-size:1.1rem;
+  display:flex;align-items:center;justify-content:center;transition:background .2s;z-index:2}
+.carousel-btn:hover{background:rgba(var(--accent-rgb),.7)}
+.carousel-btn.prev{left:12px}.carousel-btn.next{right:12px}
+.carousel-dots{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
+  display:flex;gap:8px;z-index:2}
+.carousel-dots span{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.35);
+  cursor:pointer;transition:all .25s}
+.carousel-dots span.active{background:var(--accent);box-shadow:0 0 8px rgba(var(--accent-rgb),.6)}
+.detail-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.4rem,4vw,2.2rem);
+  font-weight:800;margin-bottom:8px;line-height:1.2}
+.detail-meta{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+.detail-meta .tag{font-size:.78rem;padding:5px 14px;border-radius:50px;font-weight:600;
+  background:rgba(var(--accent-rgb),.1);color:var(--accent);border:1px solid rgba(var(--accent-rgb),.2)}
+.detail-creator{font-size:.88rem;color:var(--text-secondary);display:flex;align-items:center;gap:6px}
+.detail-creator a{color:var(--accent);font-weight:600}
+.var-section{margin-bottom:24px}
+.var-section h4{font-size:.9rem;font-weight:700;color:var(--accent2);margin-bottom:12px}
+.var-inputs{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.var-input{display:flex;flex-direction:column;gap:4px}
+.var-input label{font-size:.75rem;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.var-input input{padding:10px 14px;border-radius:8px;background:var(--bg-input);
+  border:1px solid var(--border);color:var(--text-primary);font-size:.9rem;transition:border .2s}
+.var-input input:focus{border-color:var(--accent)}
+.prompt-box{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:24px;margin-bottom:24px;position:relative}
+.prompt-box pre{white-space:pre-wrap;word-wrap:break-word;font-size:.92rem;line-height:1.7;
+  color:var(--text-primary);font-family:'DM Sans',sans-serif}
+.prompt-box .var-highlight{color:var(--accent2);font-weight:700}
+.detail-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:32px}
+.action-btn{padding:12px 22px;border-radius:10px;font-weight:700;font-size:.88rem;
+  display:inline-flex;align-items:center;gap:8px;transition:all .25s}
+.action-btn.copy{background:var(--accent);color:#060610}
+.action-btn.copy:hover{box-shadow:var(--glow-accent);transform:translateY(-2px)}
+.action-btn.download{background:rgba(var(--info-rgb),.15);color:var(--info);border:1px solid rgba(var(--info-rgb),.3)}
+.action-btn.download:hover{background:rgba(var(--info-rgb),.25)}
+.action-btn.fav{background:rgba(var(--danger-rgb),.1);color:var(--danger);border:1px solid rgba(var(--danger-rgb),.25)}
+.action-btn.fav.active{background:rgba(var(--danger-rgb),.2);border-color:var(--danger)}
+.action-btn.report{background:rgba(var(--danger-rgb),.08);color:var(--text-muted);border:1px solid var(--border)}
+.action-btn.report:hover{color:var(--danger);border-color:rgba(var(--danger-rgb),.3)}
+.detail-stats{display:flex;gap:24px;margin-bottom:32px}
+.detail-stats span{font-size:.85rem;color:var(--text-secondary);display:flex;align-items:center;gap:6px}
+.detail-stats i{color:var(--accent)}
+.related-section h3{font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:18px}
+.related-scroll{display:flex;gap:16px;overflow-x:auto;padding-bottom:12px;scroll-snap-type:x mandatory}
+.related-scroll::-webkit-scrollbar{height:6px}
+.related-scroll::-webkit-scrollbar-thumb{background:var(--border-light);border-radius:3px}
+.related-card{min-width:260px;max-width:280px;scroll-snap-align:start;background:var(--bg-card);
+  border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:all .3s}
+.related-card:hover{border-color:rgba(var(--accent-rgb),.4);transform:translateY(-3px)}
+.related-card img{width:100%;height:140px;object-fit:cover}
+.related-card .rc-body{padding:14px}
+.related-card h4{font-size:.88rem;font-weight:700;margin-bottom:4px}
+.related-card span{font-size:.75rem;color:var(--text-muted)}
+
+/* ============================================
+   FORMS & PAGES (Contact, About, Credits, Terms)
+   ============================================ */
+.page-container{max-width:800px;margin:0 auto;padding:100px 24px 60px}
+.page-container h1{font-family:'Orbitron',sans-serif;font-size:clamp(1.6rem,4vw,2.4rem);
+  font-weight:800;margin-bottom:24px}
+.page-container h2{font-family:'Orbitron',sans-serif;font-size:1.3rem;font-weight:700;
+  margin:28px 0 12px;color:var(--accent)}
+.page-container p{color:var(--text-secondary);line-height:1.8;margin-bottom:16px}
+.page-container a.accent-link{color:var(--accent);font-weight:600;border-bottom:1px solid rgba(var(--accent-rgb),.3)}
+.page-container a.accent-link:hover{border-color:var(--accent)}
+.form-group{margin-bottom:18px}
+.form-group label{display:block;font-size:.85rem;font-weight:600;margin-bottom:6px;color:var(--text-secondary)}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:12px 16px;
+  border-radius:10px;background:var(--bg-input);border:1px solid var(--border);
+  color:var(--text-primary);font-size:.95rem;transition:border .25s}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--accent)}
+.form-group textarea{resize:vertical;min-height:100px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.notice-banner{background:rgba(var(--accent2-rgb),.1);border:1px solid rgba(var(--accent2-rgb),.3);
+  border-radius:var(--radius);padding:16px 20px;margin:20px 0;font-size:.9rem;color:var(--accent2);
+  font-weight:600;display:flex;align-items:flex-start;gap:10px}
+.notice-banner i{font-size:1.2rem;margin-top:2px}
+.contact-info-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-bottom:32px}
+.contact-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:20px;display:flex;align-items:center;gap:14px;transition:border .25s}
+.contact-card:hover{border-color:rgba(var(--accent-rgb),.3)}
+.contact-card i{font-size:1.5rem;color:var(--accent)}
+.contact-card div{font-size:.85rem;color:var(--text-secondary)}
+.contact-card strong{display:block;color:var(--text-primary);font-size:1rem}
+.credits-list{display:grid;gap:14px}
+.credit-item{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:18px 22px;display:flex;align-items:center;gap:16px;transition:border .25s}
+.credit-item:hover{border-color:rgba(var(--accent-rgb),.3)}
+.credit-avatar{width:48px;height:48px;border-radius:50%;background:rgba(var(--accent-rgb),.12);
+  display:flex;align-items:center;justify-content:center;color:var(--accent);font-weight:800;font-size:1.1rem;flex-shrink:0}
+.credit-info h4{font-size:1rem;font-weight:700}
+.credit-info span{font-size:.82rem;color:var(--text-muted)}
+.terms-content ul{padding-left:20px;margin-bottom:16px}
+.terms-content li{color:var(--text-secondary);margin-bottom:8px;line-height:1.6}
+.terms-content li strong{color:var(--text-primary)}
+
+/* ============================================
+   MODAL (Add Prompt, Report)
+   ============================================ */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);
+  z-index:2000;display:flex;align-items:center;justify-content:center;padding:24px;
+  opacity:0;pointer-events:none;transition:opacity .3s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-box{background:var(--bg-secondary);border:1px solid var(--border);border-radius:var(--radius-lg);
+  max-width:640px;width:100%;max-height:85vh;overflow-y:auto;padding:32px;
+  transform:translateY(20px);transition:transform .3s}
+.modal-overlay.open .modal-box{transform:translateY(0)}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.modal-header h2{font-family:'Orbitron',sans-serif;font-size:1.3rem;font-weight:700}
+.modal-close{width:36px;height:36px;border-radius:50%;background:var(--bg-input);
+  display:flex;align-items:center;justify-content:center;color:var(--text-muted);
+  font-size:1.1rem;transition:all .2s}
+.modal-close:hover{color:var(--danger);background:rgba(var(--danger-rgb),.1)}
+.dynamic-fields{display:none;margin-top:12px}
+.dynamic-fields.show{display:block}
+
+/* ============================================
+   TOAST NOTIFICATIONS
+   ============================================ */
+#toast-container{position:fixed;bottom:90px;right:20px;z-index:3000;display:flex;
+  flex-direction:column-reverse;gap:10px;pointer-events:none}
+.toast{padding:14px 22px;border-radius:10px;font-size:.88rem;font-weight:600;
+  display:flex;align-items:center;gap:10px;pointer-events:all;
+  animation:toastIn .4s ease;min-width:240px;max-width:380px;
+  box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.toast.success{background:rgba(var(--accent-rgb),.15);color:var(--accent);border:1px solid rgba(var(--accent-rgb),.3)}
+.toast.error{background:rgba(var(--danger-rgb),.15);color:var(--danger);border:1px solid rgba(var(--danger-rgb),.3)}
+.toast.info{background:rgba(var(--info-rgb),.15);color:var(--info);border:1px solid rgba(var(--info-rgb),.3)}
+.toast.out{animation:toastOut .3s ease forwards}
+@keyframes toastIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+@keyframes toastOut{to{opacity:0;transform:translateX(40px)}}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+footer{background:var(--bg-secondary);border-top:1px solid var(--border);padding:40px 24px;text-align:center}
+.footer-inner{max-width:1280px;margin:0 auto}
+.footer-links{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-bottom:16px}
+.footer-links a{font-size:.85rem;color:var(--text-secondary);transition:color .2s}
+.footer-links a:hover{color:var(--accent)}
+.footer-copy{font-size:.82rem;color:var(--text-muted)}
+.footer-copy a{color:var(--accent);font-weight:600;transition:color .2s}
+.footer-copy a:hover{color:var(--accent2)}
+
+/* ============================================
+   WHATSAPP FLOAT
+   ============================================ */
+#whatsapp-float{position:fixed;bottom:24px;right:24px;width:56px;height:56px;
+  border-radius:50%;background:#25D366;color:#fff;font-size:1.6rem;
+  display:flex;align-items:center;justify-content:center;z-index:900;
+  box-shadow:0 4px 20px rgba(37,211,102,.4);transition:transform .25s}
+#whatsapp-float:hover{transform:scale(1.1)}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media(max-width:768px){
+  .nav-links,.btn-add-prompt.nav-btn{display:none}
+  .nav-hamburger{display:flex}
+  .prompts-grid{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  .hero-btns{flex-direction:column;align-items:center}
+  .detail-actions{flex-direction:column}
+  .action-btn{justify-content:center}
+  .carousel{aspect-ratio:4/3}
+  .contact-info-grid{grid-template-columns:1fr}
+}
+@media(min-width:769px) and (max-width:1024px){
+  .prompts-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(min-width:1025px){
+  .prompts-grid{grid-template-columns:repeat(3,1fr)}
+}
+
+/* ============================================
+   UTILITY & ANIMATIONS
+   ============================================ */
+.fade-in{animation:fadeIn .5s ease both}
+@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.stagger-1{animation-delay:.1s}.stagger-2{animation-delay:.2s}.stagger-3{animation-delay:.3s}
+.stagger-4{animation-delay:.4s}.stagger-5{animation-delay:.5s}
+.text-accent{color:var(--accent)}
+.text-danger{color:var(--danger)}
+.text-muted{color:var(--text-muted)}
+.mt-2{margin-top:8px}.mt-4{margin-top:16px}.mb-2{margin-bottom:8px}.mb-4{margin-bottom:16px}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<!-- Scroll Progress Bar -->
+<div id="scroll-progress" role="presentation"></div>
+
+<!-- Navigation -->
+<nav id="main-nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="#/" class="nav-logo" aria-label="Vezlo AI Prompt Home">VEZLO <span>AI Prompt</span></a>
+    <div class="nav-links">
+      <a href="#/" data-nav="home">Home</a>
+      <a href="#/prompts" data-nav="prompts">Prompts</a>
+      <a href="#/contact" data-nav="contact">Contact</a>
+      <a href="#/about" data-nav="about">About</a>
+    </div>
+    <div class="nav-actions">
+      <button class="btn-add-prompt nav-btn" onclick="App.openAddModal()" aria-label="Add New Prompt"><i class="fas fa-plus"></i> Add Prompt</button>
+      <div class="theme-toggle" onclick="App.toggleTheme()" role="switch" aria-label="Toggle theme" tabindex="0"></div>
+      <div class="nav-hamburger" onclick="App.toggleMobile()" aria-label="Menu" tabindex="0">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobile-menu" role="navigation" aria-label="Mobile navigation">
+  <a href="#/" data-nav="home" onclick="App.closeMobile()">Home</a>
+  <a href="#/prompts" data-nav="prompts" onclick="App.closeMobile()">Prompts</a>
+  <a href="#/contact" data-nav="contact" onclick="App.closeMobile()">Contact</a>
+  <a href="#/about" data-nav="about" onclick="App.closeMobile()">About</a>
+  <a href="#/credits" data-nav="credits" onclick="App.closeMobile()">Credits</a>
+  <a href="#/terms" data-nav="terms" onclick="App.closeMobile()">Terms & Rules</a>
+  <button class="btn-add-prompt" onclick="App.closeMobile();App.openAddModal()"><i class="fas fa-plus"></i> Add Prompt</button>
+</div>
+
+<!-- Main Content Area -->
+<main id="app-content" role="main"></main>
+
+<!-- Footer -->
+<footer role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-links">
+      <a href="#/">Home</a>
+      <a href="#/prompts">Prompts</a>
+      <a href="#/contact">Contact</a>
+      <a href="#/about">About Us</a>
+      <a href="#/credits">Credits</a>
+      <a href="#/terms">Terms & Rules</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 Copyright. Developed by <a href="https://vezlo-web.vercel.app/" target="_blank" rel="noopener">Vezlo</a></p>
+  </div>
+</footer>
+
+<!-- WhatsApp Float -->
+<a id="whatsapp-float" href="https://wa.me/94775048455" target="_blank" rel="noopener" aria-label="WhatsApp Support">
+  <i class="fab fa-whatsapp"></i>
+</a>
+
+<!-- Toast Container -->
+<div id="toast-container" aria-live="polite"></div>
+
+<!-- Modal Container -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-box" id="modal-box" role="dialog" aria-modal="true"></div>
+</div>
+
+<script>
+/* ============================================
+   PROMPT DATA — 12 Premium Prompts
+   ============================================ */
+const PROMPTS = [
+  {
+    id:1,
+    title:"Cinematic Fantasy Landscape",
+    caption:"Generate breathtaking cinematic fantasy environments with volumetric lighting and atmosphere control.",
+    prompt:"Create a breathtaking cinematic fantasy landscape of a [Terrain] surrounded by [Element], with [Lighting] lighting and [Atmosphere] atmosphere. Shot on an 85mm lens, f/1.4, golden hour, volumetric fog, ultra-detailed, 8K resolution --ar 16:9 --v 6",
+    category:"Midjourney",
+    tags:["Midjourney","Landscape","Cinematic","Fantasy"],
+    images:["https://picsum.photos/seed/fantasy1a/800/600","https://picsum.photos/seed/fantasy1b/800/600","https://picsum.photos/seed/fantasy1c/800/600","https://picsum.photos/seed/fantasy1d/800/600"],
+    creator:{name:"Aria Stormfield",link:"https://example.com/aria"},
+    isOriginal:true,copies:234,views:1890,createdAt:"2025-12-01"
+  },
+  {
+    id:2,
+    title:"Full-Stack SaaS Landing Page",
+    caption:"Build complete, production-ready SaaS landing pages with pricing, testimonials, and smooth animations.",
+    prompt:"Act as a senior full-stack developer. Build a complete, responsive SaaS landing page for a [ProductType] called '[ProductName]'. Include: hero section with gradient background, pricing table with 3 tiers ([Currency][BasePrice]/mo), feature comparison, testimonials carousel, FAQ accordion, and footer. Use [Framework] with [CSSFramework]. Make it production-ready with smooth scroll animations.",
+    category:"Web Development",
+    tags:["Web Dev","SaaS","Frontend","Full-Stack"],
+    images:["https://picsum.photos/seed/saas2a/800/600","https://picsum.photos/seed/saas2b/800/600","https://picsum.photos/seed/saas2c/800/600","https://picsum.photos/seed/saas2d/800/600"],
+    creator:{name:"Dev Chandra",link:"https://example.com/devchandra"},
+    isOriginal:true,copies:412,views:3210,createdAt:"2025-11-28"
+  },
+  {
+    id:3,
+    title:"Expert Code Review Assistant",
+    caption:"Get senior-level code reviews covering security, performance, best practices, and refactoring suggestions.",
+    prompt:"You are a senior software engineer conducting a thorough code review. Analyze the following [Language] code for: 1) Security vulnerabilities 2) Performance bottlenecks 3) Code smells and anti-patterns 4) Best practice violations 5) Accessibility issues. Provide specific line-by-line feedback and refactored code suggestions. Severity level: [ReviewDepth]. Code to review:\n\n[CodeSnippet]",
+    category:"ChatGPT",
+    tags:["ChatGPT","Code Review","Programming","Security"],
+    images:["https://picsum.photos/seed/code3a/800/600","https://picsum.photos/seed/code3b/800/600","https://picsum.photos/seed/code3c/800/600","https://picsum.photos/seed/code3d/800/600"],
+    creator:{name:"Kai Nakamura",link:"https://example.com/kai"},
+    isOriginal:true,copies:567,views:4530,createdAt:"2025-11-20"
+  },
+  {
+    id:4,
+    title:"Professional Portrait Lighting",
+    caption:"Design precise portrait lighting setups with key/fill/rim positions, modifiers, and camera settings.",
+    prompt:"Design a professional portrait photography lighting setup for [SubjectType] in a [Setting] environment. Specify: key light position and modifier ([KeyModifier]), fill light ratio, rim/accent light placement, background treatment, and camera settings for [CameraBody] with [LensChoice]. Include a detailed diagram description and post-processing workflow for [EditingStyle] style.",
+    category:"Photography",
+    tags:["Photography","Portrait","Lighting","Studio"],
+    images:["https://picsum.photos/seed/portrait4a/800/600","https://picsum.photos/seed/portrait4b/800/600","https://picsum.photos/seed/portrait4c/800/600","https://picsum.photos/seed/portrait4d/800/600"],
+    creator:{name:"Elena Voss",link:"https://example.com/elena"},
+    isOriginal:true,copies:189,views:1540,createdAt:"2025-11-15"
+  },
+  {
+    id:5,
+    title:"Business Strategy Consultant",
+    caption:"Generate McKinsey-level business strategies with market analysis, roadmaps, and revenue projections.",
+    prompt:"Act as a McKinsey-level business strategy consultant for a [Industry] company. The company is [CompanyStage] and facing [Challenge]. Develop a comprehensive strategy including: market analysis, competitive positioning, 3-year roadmap with quarterly milestones, revenue projection model ([Currency] based), risk mitigation plan, and KPI dashboard. Present in executive summary format with actionable recommendations.",
+    category:"ChatGPT",
+    tags:["ChatGPT","Business","Strategy","Consulting"],
+    images:["https://picsum.photos/seed/biz5a/800/600","https://picsum.photos/seed/biz5b/800/600","https://picsum.photos/seed/biz5c/800/600","https://picsum.photos/seed/biz5d/800/600"],
+    creator:{name:"Marcus Reid",link:"https://example.com/marcus"},
+    isOriginal:false,originalCreator:{name:"StrategyGPT",link:"https://strategygpt.example.com"},
+    copies:321,views:2780,createdAt:"2025-11-10"
+  },
+  {
+    id:6,
+    title:"Abstract Neon Art Generator",
+    caption:"Create stunning abstract neon art with intertwined forms, chromatic aberration, and wet surface reflections.",
+    prompt:"Generate an abstract neon art piece featuring [Shape] forms intertwined with [SecondaryElement], glowing in [PrimaryColor] and [SecondaryColor] neon lights against a deep [BackgroundColor] void. Add subtle particle effects, chromatic aberration, and reflections on a wet surface. Artstation trending, cinematic composition, 8K --ar 2:3 --v 6",
+    category:"Midjourney",
+    tags:["Midjourney","Neon","Abstract","Digital Art"],
+    images:["https://picsum.photos/seed/neon6a/800/600","https://picsum.photos/seed/neon6b/800/600","https://picsum.photos/seed/neon6c/800/600","https://picsum.photos/seed/neon6d/800/600"],
+    creator:{name:"Zara Pixel",link:"https://example.com/zara"},
+    isOriginal:true,copies:445,views:3650,createdAt:"2025-11-05"
+  },
+  {
+    id:7,
+    title:"React Component Architect",
+    caption:"Generate production-ready React components with TypeScript, tests, animations, and accessibility compliance.",
+    prompt:"Create a production-ready React [ComponentType] component with the following specifications: Purpose: [Purpose]. Props interface with TypeScript. Include [Features] functionality. Implement with [StateManagement] for state. Add Framer Motion animations for [AnimationType] transitions. Include unit tests using Jest and React Testing Library. Follow atomic design principles and ensure WCAG 2.1 AA compliance.",
+    category:"Web Development",
+    tags:["Web Dev","React","TypeScript","Component"],
+    images:["https://picsum.photos/seed/react7a/800/600","https://picsum.photos/seed/react7b/800/600","https://picsum.photos/seed/react7c/800/600","https://picsum.photos/seed/react7d/800/600"],
+    creator:{name:"Sam Okafor",link:"https://example.com/sam"},
+    isOriginal:true,copies:298,views:2340,createdAt:"2025-10-30"
+  },
+  {
+    id:8,
+    title:"Street Photography Masterclass",
+    caption:"Comprehensive street photography guides with camera settings, composition frameworks, and editing presets.",
+    prompt:"Provide a comprehensive street photography shooting guide for capturing [CityType] scenes in [WeatherCondition] weather. Cover: optimal camera settings for [CameraModel], zone focusing technique, compositional frameworks (leading lines, layers, juxtaposition), ethical considerations, post-processing presets for [Mood] mood, and 10 specific shot ideas with location types and timing recommendations.",
+    category:"Photography",
+    tags:["Photography","Street","Composition","Urban"],
+    images:["https://picsum.photos/seed/street8a/800/600","https://picsum.photos/seed/street8b/800/600","https://picsum.photos/seed/street8c/800/600","https://picsum.photos/seed/street8d/800/600"],
+    creator:{name:"Jiro Tanaka",link:"https://example.com/jiro"},
+    isOriginal:true,copies:167,views:1290,createdAt:"2025-10-25"
+  },
+  {
+    id:9,
+    title:"Creative Writing Coach",
+    caption:"Develop story concepts with character arcs, 3-act structure, dialogue techniques, and revision strategies.",
+    prompt:"As an award-winning [Genre] author and writing coach, help me develop my story concept: '[StoryIdea]'. Provide: character arc templates for the protagonist, a 3-act structure outline with key turning points, dialogue techniques for [Tone] tone, world-building checklist, pacing guide, and revision strategies. Also suggest 5 comparable published works for reference.",
+    category:"ChatGPT",
+    tags:["ChatGPT","Writing","Story","Creative"],
+    images:["https://picsum.photos/seed/write9a/800/600","https://picsum.photos/seed/write9b/800/600","https://picsum.photos/seed/write9c/800/600","https://picsum.photos/seed/write9d/800/600"],
+    creator:{name:"Luna Marquez",link:"https://example.com/luna"},
+    isOriginal:true,copies:276,views:2180,createdAt:"2025-10-20"
+  },
+  {
+    id:10,
+    title:"Photorealistic Product Showcase",
+    caption:"Create studio-quality product photography with precise lighting, surface, and camera specifications.",
+    prompt:"Create a photorealistic product photography shot of a [Product] in [Finish] finish, placed on a [SurfaceType] surface with [PropStyle] props. Studio lighting with soft key light from [LightDirection], subtle rim light, and [BackgroundStyle] background. Shot on Phase One IQ4 150MP, [LensChoice], f/8, focus stacking. Commercial quality, brand campaign ready --ar 4:5 --v 6 --s 750",
+    category:"Midjourney",
+    tags:["Midjourney","Product","Commercial","Photorealistic"],
+    images:["https://picsum.photos/seed/product10a/800/600","https://picsum.photos/seed/product10b/800/600","https://picsum.photos/seed/product10c/800/600","https://picsum.photos/seed/product10d/800/600"],
+    creator:{name:"Oliver Kraft",link:"https://example.com/oliver"},
+    isOriginal:false,originalCreator:{name:"ProductShot Pro",link:"https://productshotpro.example.com"},
+    copies:389,views:3100,createdAt:"2025-10-15"
+  },
+  {
+    id:11,
+    title:"API Documentation Writer",
+    caption:"Generate comprehensive API docs with schemas, auth, error codes, and multi-language SDK snippets.",
+    prompt:"Generate comprehensive API documentation for a [APIType] API endpoint: [EndpointDescription]. Include: endpoint URL and HTTP methods, request/response schemas with [DataType] types, authentication requirements ([AuthMethod]), rate limiting details, pagination parameters, error codes with descriptions, cURL examples, and SDK code snippets in [Language]. Format in OpenAPI 3.0 specification.",
+    category:"Web Development",
+    tags:["Web Dev","API","Documentation","Backend"],
+    images:["https://picsum.photos/seed/api11a/800/600","https://picsum.photos/seed/api11b/800/600","https://picsum.photos/seed/api11c/800/600","https://picsum.photos/seed/api11d/800/600"],
+    creator:{name:"Priya Sharma",link:"https://example.com/priya"},
+    isOriginal:true,copies:198,views:1670,createdAt:"2025-10-10"
+  },
+  {
+    id:12,
+    title:"Golden Hour Portrait Mastery",
+    caption:"Complete golden hour portrait session plans with timeline, lens selection, posing, and color grading.",
+    prompt:"Design a golden hour portrait photography session plan for [SubjectCount] subject(s) at [LocationType] during golden hour. Specify: optimal shooting timeline (30 min before to 15 min after sunset), lens selection for [ShootingStyle] style ([LensFocalLength]mm), exposure settings progression, natural reflector identification, posing guide for [PoseStyle] poses, and Lightroom editing workflow for warm [ColorGrade] color grading.",
+    category:"Photography",
+    tags:["Photography","Portrait","Golden Hour","Outdoor"],
+    images:["https://picsum.photos/seed/golden12a/800/600","https://picsum.photos/seed/golden12b/800/600","https://picsum.photos/seed/golden12c/800/600","https://picsum.photos/seed/golden12d/800/600"],
+    creator:{name:"Sofia Reyes",link:"https://example.com/sofia"},
+    isOriginal:true,copies:234,views:1920,createdAt:"2025-10-05"
+  }
+];
+
+/* ============================================
+   CATEGORIES DATA
+   ============================================ */
+const CATEGORIES = [
+  {name:"ChatGPT",icon:"fas fa-robot",count:3},
+  {name:"Midjourney",icon:"fas fa-palette",count:3},
+  {name:"Web Development",icon:"fas fa-code",count:3},
+  {name:"Photography",icon:"fas fa-camera",count:3}
+];
+
+/* ============================================
+   APPLICATION STATE & LOGIC
+   ============================================ */
+const App = {
+  state: {
+    theme: localStorage.getItem('vezlo-theme') || 'dark',
+    favorites: JSON.parse(localStorage.getItem('vezlo-favorites') || '[]'),
+    stats: JSON.parse(localStorage.getItem('vezlo-stats') || '{}'),
+    searchQuery: '',
+    activeCategory: 'all',
+    sortBy: 'newest',
+    currentRoute: '',
+    carouselIndex: 0
+  },
+
+  /* Initialize the application */
+  init() {
+    this.applyTheme();
+    window.addEventListener('hashchange', () => this.route());
+    window.addEventListener('scroll', () => this.updateScrollProgress());
+    this.route();
+    // Register service worker for PWA
+    if ('serviceWorker' in navigator) {
+      const swCode = `self.addEventListener('install',e=>{self.skipWaiting()});self.addEventListener('activate',e=>{e.waitUntil(clients.claim())});self.addEventListener('fetch',e=>{e.respondWith(fetch(e.request).catch(()=>new Response('Offline')))});`;
+      const blob = new Blob([swCode], {type:'application/javascript'});
+      // Note: Blob SW registration may not work in all browsers; for full PWA, serve sw.js separately
+    }
+  },
+
+  /* ---- ROUTER ---- */
+  route() {
+    const hash = window.location.hash || '#/';
+    const path = hash.replace('#', '');
+    this.state.currentRoute = path;
+    this.closeMobile();
+    this.updateNavActive(path);
+
+    if (path === '/' || path === '') this.renderHome();
+    else if (path === '/prompts') this.renderPrompts();
+    else if (path.startsWith('/prompt/')) {
+      const id = parseInt(path.split('/')[2]);
+      this.renderDetail(id);
+    }
+    else if (path === '/contact') this.renderContact();
+    else if (path === '/about') this.renderAbout();
+    else if (path === '/credits') this.renderCredits();
+    else if (path === '/terms') this.renderTerms();
+    else this.renderHome();
+
+    window.scrollTo({top:0, behavior:'smooth'});
+  },
+
+  updateNavActive(path) {
+    document.querySelectorAll('[data-nav]').forEach(a => {
+      a.classList.toggle('active', a.dataset.nav === this.getNavKey(path));
+    });
+  },
+
+  getNavKey(path) {
+    if (path === '/' || path === '') return 'home';
+    if (path.startsWith('/prompt/')) return 'prompts';
+    return path.replace('/','');
+  },
+
+  /* ---- THEME ---- */
+  applyTheme() {
+    document.documentElement.setAttribute('data-theme', this.state.theme);
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.content = this.state.theme === 'dark' ? '#060610' : '#f2f1eb';
+  },
+
+  toggleTheme() {
+    this.state.theme = this.state.theme === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('vezlo-theme', this.state.theme);
+    this.applyTheme();
+  },
+
+  /* ---- MOBILE MENU ---- */
+  toggleMobile() {
+    document.getElementById('mobile-menu').classList.toggle('open');
+  },
+  closeMobile() {
+    document.getElementById('mobile-menu').classList.remove('open');
+  },
+
+  /* ---- SCROLL PROGRESS ---- */
+  updateScrollProgress() {
+    const h = document.documentElement;
+    const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+    document.getElementById('scroll-progress').style.width = Math.min(pct, 100) + '%';
+  },
+
+  /* ---- LOCAL STORAGE HELPERS ---- */
+  isFav(id) { return this.state.favorites.includes(id); },
+  toggleFav(id) {
+    const idx = this.state.favorites.indexOf(id);
+    if (idx > -1) { this.state.favorites.splice(idx,1); this.toast('Removed from Favorites','info'); }
+    else { this.state.favorites.push(id); this.toast('Added to Favorites','success'); }
+    localStorage.setItem('vezlo-favorites', JSON.stringify(this.state.favorites));
+  },
+  getStats(id) { return this.state.stats[id] || {copies:0,views:0}; },
+  incrementCopies(id) {
+    if (!this.state.stats[id]) this.state.stats[id] = {copies:0,views:0};
+    this.state.stats[id].copies++;
+    localStorage.setItem('vezlo-stats', JSON.stringify(this.state.stats));
+  },
+  incrementViews(id) {
+    if (!this.state.stats[id]) this.state.stats[id] = {copies:0,views:0};
+    this.state.stats[id].views++;
+    localStorage.setItem('vezlo-stats', JSON.stringify(this.state.stats));
+  },
+  getTotalCopies(id) {
+    const p = PROMPTS.find(x=>x.id===id);
+    const s = this.getStats(id);
+    return (p?p.copies:0) + s.copies;
+  },
+  getTotalViews(id) {
+    const p = PROMPTS.find(x=>x.id===id);
+    const s = this.getStats(id);
+    return (p?p.views:0) + s.views;
+  },
+
+  /* ---- TOAST ---- */
+  toast(msg, type='success') {
+    const c = document.getElementById('toast-container');
+    const t = document.createElement('div');
+    t.className = `toast ${type}`;
+    const icons = {success:'fa-check-circle',error:'fa-times-circle',info:'fa-info-circle'};
+    t.innerHTML = `<i class="fas ${icons[type]||icons.info}"></i><span>${msg}</span>`;
+    c.appendChild(t);
+    setTimeout(()=>{ t.classList.add('out'); setTimeout(()=>t.remove(),300); },3000);
+  },
+
+  /* ---- VARIABLE PARSER ---- */
+  parseVars(promptText) {
+    const re = /\[([^\]]+)\]/g;
+    const vars = [];
+    let m;
+    while ((m = re.exec(promptText)) !== null) {
+      if (!vars.find(v=>v.name===m[1])) vars.push({name:m[1], original:m[0]});
+    }
+    return vars;
+  },
+
+  replaceVars(promptText, values) {
+    let result = promptText;
+    for (const [k,v] of Object.entries(values)) {
+      if (v) result = result.replace(new RegExp(`\\[${k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}\\]`,'g'), `<span class="var-highlight">${v}</span>`);
+    }
+    return result;
+  },
+
+  replaceVarsPlain(promptText, values) {
+    let result = promptText;
+    for (const [k,v] of Object.entries(values)) {
+      if (v) result = result.replace(new RegExp(`\\[${k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}\\]`,'g'), v);
+    }
+    return result;
+  },
+
+  /* ---- MODAL ---- */
+  openModal(html) {
+    const overlay = document.getElementById('modal-overlay');
+    document.getElementById('modal-box').innerHTML = html;
+    overlay.classList.add('open');
+    // Close on overlay click
+    overlay.onclick = (e) => { if (e.target === overlay) this.closeModal(); };
+  },
+  closeModal() {
+    document.getElementById('modal-overlay').classList.remove('open');
+  },
+
+  /* ---- ADD PROMPT MODAL ---- */
+  openAddModal() {
+    const html = `
+      <div class="modal-header">
+        <h2>Submit New Prompt</h2>
+        <button class="modal-close" onclick="App.closeModal()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="notice-banner"><i class="fas fa-exclamation-triangle"></i><span>Please send your prompt's example photos directly to us via WhatsApp after submitting this form.</span></div>
+      <form id="add-prompt-form" onsubmit="App.submitAddPrompt(event)">
+        <div class="form-group"><label>Prompt Title</label><input type="text" id="ap-title" required placeholder="e.g. Cinematic Landscape Generator"></div>
+        <div class="form-group"><label>Short Description</label><input type="text" id="ap-desc" required placeholder="Brief description of what the prompt does"></div>
+        <div class="form-group"><label>Full Prompt Text</label><textarea id="ap-prompt" required placeholder="Enter the full prompt. Use [VariableName] for customizable parts."></textarea></div>
+        <div class="form-group"><label>Category</label>
+          <select id="ap-category" required>
+            <option value="">Select category</option>
+            <option>ChatGPT</option><option>Midjourney</option><option>Web Development</option><option>Photography</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Display Name</label><input type="text" id="ap-display" required placeholder="Your public name"></div>
+          <div class="form-group"><label>Real Name</label><input type="text" id="ap-real" required placeholder="Your real name (private)"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Age</label><input type="number" id="ap-age" required min="13" placeholder="Your age"></div>
+          <div class="form-group"><label>Country</label><input type="text" id="ap-country" required placeholder="Your country"></div>
+        </div>
+        <div class="form-group"><label>Address</label><input type="text" id="ap-address" placeholder="City, State (optional)"></div>
+        <div class="form-group"><label>Creation Type</label>
+          <select id="ap-creation" required onchange="App.toggleOriginalFields(this.value)">
+            <option value="original">Original Work</option>
+            <option value="copied">Copied / Inspired</option>
+          </select>
+        </div>
+        <div class="dynamic-fields" id="ap-original-fields">
+          <div class="form-group"><label>Original Creator Name</label><input type="text" id="ap-creator-name" placeholder="Who originally created this?"></div>
+          <div class="form-group"><label>Original Creator Profile Link</label><input type="url" id="ap-creator-link" placeholder="https://..."></div>
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%;justify-content:center;margin-top:12px"><i class="fab fa-whatsapp"></i> Submit via WhatsApp</button>
+      </form>`;
+    this.openModal(html);
+  },
+
+  toggleOriginalFields(val) {
+    const el = document.getElementById('ap-original-fields');
+    el.classList.toggle('show', val === 'copied');
+  },
+
+  submitAddPrompt(e) {
+    e.preventDefault();
+    const title = document.getElementById('ap-title').value;
+    const desc = document.getElementById('ap-desc').value;
+    const prompt = document.getElementById('ap-prompt').value;
+    const category = document.getElementById('ap-category').value;
+    const displayName = document.getElementById('ap-display').value;
+    const realName = document.getElementById('ap-real').value;
+    const age = document.getElementById('ap-age').value;
+    const country = document.getElementById('ap-country').value;
+    const address = document.getElementById('ap-address').value;
+    const creation = document.getElementById('ap-creation').value;
+    const creatorName = document.getElementById('ap-creator-name')?.value || '';
+    const creatorLink = document.getElementById('ap-creator-link')?.value || '';
+
+    let text = `✨ *Vezlo AI Prompt — New Prompt Submission*\n\n`;
+    text += `📝 *Title:* ${title}\n`;
+    text += `📋 *Description:* ${desc}\n`;
+    text += `💬 *Prompt Text:*\n${prompt}\n\n`;
+    text += `🏷️ *Category:* ${category}\n`;
+    text += `👤 *Display Name:* ${displayName}\n`;
+    text += `📛 *Real Name:* ${realName}\n`;
+    text += `🎂 *Age:* ${age}\n`;
+    text += `🌍 *Country:* ${country}\n`;
+    text += `📍 *Address:* ${address || 'N/A'}\n\n`;
+    text += `🔨 *Creation Type:* ${creation === 'original' ? 'Original Work' : 'Copied/Inspired'}\n`;
+    if (creation === 'copied') {
+      text += `🔗 *Original Creator:* ${creatorName || 'N/A'}\n`;
+      text += `🌐 *Creator Link:* ${creatorLink || 'N/A'}\n`;
+    }
+    text += `\n📸 _Example photos will be sent separately._`;
+
+    window.open(`https://wa.me/94775048455?text=${encodeURIComponent(text)}`, '_blank');
+    this.closeModal();
+    this.toast('Redirecting to WhatsApp for submission!', 'success');
+  },
+
+  /* ---- REPORT PROMPT ---- */
+  openReport(id) {
+    const p = PROMPTS.find(x=>x.id===id);
+    if (!p) return;
+    const html = `
+      <div class="modal-header">
+        <h2>Report Prompt</h2>
+        <button class="modal-close" onclick="App.closeModal()"><i class="fas fa-times"></i></button>
+      </div>
+      <form onsubmit="App.submitReport(event, ${id})">
+        <div class="form-group"><label>Reason</label>
+          <select id="rp-reason" required>
+            <option value="">Select reason</option>
+            <option>Stolen / Plagiarized Content</option>
+            <option>Inappropriate Content</option>
+            <option>Misleading Description</option>
+            <option>Broken Links / Images</option>
+            <option>Spam</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Details</label><textarea id="rp-details" required placeholder="Please describe the issue in detail..."></textarea></div>
+        <button type="submit" class="btn-primary" style="width:100%;justify-content:center"><i class="fab fa-whatsapp"></i> Send Report via WhatsApp</button>
+      </form>`;
+    this.openModal(html);
+  },
+
+  submitReport(e, id) {
+    e.preventDefault();
+    const p = PROMPTS.find(x=>x.id===id);
+    const reason = document.getElementById('rp-reason').value;
+    const details = document.getElementById('rp-details').value;
+    let text = `🚨 *Vezlo AI Prompt — Report*\n\n`;
+    text += `📌 *Prompt:* ${p.title} (ID: ${id})\n`;
+    text += `📝 *Reason:* ${reason}\n`;
+    text += `💬 *Details:*\n${details}`;
+    window.open(`https://wa.me/94775048455?text=${encodeURIComponent(text)}`, '_blank');
+    this.closeModal();
+    this.toast('Report sent via WhatsApp!', 'success');
+  },
+
+  /* ---- CARD 3D TILT ---- */
+  initTilt() {
+    document.querySelectorAll('.prompt-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const cx = rect.width / 2;
+        const cy = rect.height / 2;
+        const rotateX = ((y - cy) / cy) * -6;
+        const rotateY = ((x - cx) / cx) * 6;
+        card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(800px) rotateX(0) rotateY(0) translateY(0)';
+      });
+    });
+  },
+
+  /* ---- TYPEWRITER ---- */
+  typewriter(el, texts, speed=80, pause=2000) {
+    let textIdx = 0, charIdx = 0, deleting = false;
+    const tick = () => {
+      const current = texts[textIdx];
+      if (!deleting) {
+        el.textContent = current.substring(0, charIdx + 1);
+        charIdx++;
+        if (charIdx === current.length) {
+          setTimeout(() => { deleting = true; tick(); }, pause);
+          return;
+        }
+      } else {
+        el.textContent = current.substring(0, charIdx - 1);
+        charIdx--;
+        if (charIdx === 0) {
+          deleting = false;
+          textIdx = (textIdx + 1) % texts.length;
+        }
+      }
+      setTimeout(tick, deleting ? speed / 2 : speed);
+    };
+    tick();
+  },
+
+  /* ---- SURPRISE ME ---- */
+  surpriseMe() {
+    const idx = Math.floor(Math.random() * PROMPTS.length);
+    window.location.hash = `#/prompt/${PROMPTS[idx].id}`;
+  },
+
+  /* ---- SKELETON LOADER ---- */
+  showSkeleton(container, count=6) {
+    let html = '';
+    for (let i = 0; i < count; i++) {
+      html += `<div class="skeleton-card">
+        <div class="skeleton-img"></div>
+        <div class="skeleton-body">
+          <div class="skeleton-line w70"></div>
+          <div class="skeleton-line w90"></div>
+          <div class="skeleton-line w50"></div>
+        </div>
+      </div>`;
+    }
+    container.innerHTML = `<div class="prompts-grid">${html}</div>`;
+  },
+
+  /* ============================================
+     PAGE RENDERERS
+     ============================================ */
+
+  /* ---- HOME PAGE ---- */
+  renderHome() {
+    const content = document.getElementById('app-content');
+    const trendingCards = PROMPTS.slice(0,4).map((p,i) => `
+      <div class="prompt-card fade-in stagger-${i+1}" onclick="window.location.hash='#/prompt/${p.id}'" tabindex="0" role="button" aria-label="View ${p.title}">
+        <div class="card-images">
+          <img src="${p.images[0]}" alt="${p.title} example 1" loading="lazy">
+          <img src="${p.images[1]}" alt="${p.title} example 2" loading="lazy">
+        </div>
+        <div class="card-body">
+          <h3>${p.title}</h3>
+          <p class="card-caption">${p.caption}</p>
+          <div class="card-tags">${p.tags.slice(0,2).map(t=>`<span>${t}</span>`).join('')}</div>
+          <div class="card-footer">
+            <div class="card-stats">
+              <span><i class="fas fa-copy"></i> ${this.getTotalCopies(p.id)}</span>
+              <span><i class="fas fa-eye"></i> ${this.getTotalViews(p.id)}</span>
+            </div>
+            <button class="fav-btn ${this.isFav(p.id)?'active':''}" onclick="event.stopPropagation();App.toggleFav(${p.id});App.renderHome()" aria-label="Toggle favorite">
+              <i class="fas fa-heart"></i>
+            </button>
+          </div>
+        </div>
+      </div>`).join('');
+
+    content.innerHTML = `
+      <section class="hero">
+        <div class="hero-bg-orb"></div>
+        <div class="hero-bg-orb"></div>
+        <div class="hero-bg-orb"></div>
+        <div class="hero-content">
+          <div class="hero-badge fade-in">Discover AI Prompts</div>
+          <h1 class="hero-title fade-in stagger-1">
+            Unlock Creativity with<br>
+            <span class="accent">Vezlo</span> <span class="hero-typewrap"><span class="hero-typing" id="hero-typed"></span></span>
+          </h1>
+          <p class="hero-desc fade-in stagger-2">Discover, customize, and share premium AI prompts for ChatGPT, Midjourney, Photography, and Web Development. Your next great idea starts here.</p>
+          <div class="hero-btns fade-in stagger-3">
+            <a href="#/prompts" class="btn-primary"><i class="fas fa-compass"></i> Explore Prompts</a>
+            <button class="btn-outline" onclick="App.surpriseMe()"><i class="fas fa-dice"></i> Surprise Me</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <h2>Trending Categories</h2>
+          <p>Browse prompts by the tools and skills you use most</p>
+          <div class="accent-line"></div>
+        </div>
+        <div class="categories-grid">
+          ${CATEGORIES.map((c,i) => `
+            <div class="cat-card fade-in stagger-${i+1}" onclick="window.location.hash='#/prompts';App.state.activeCategory='${c.name}';App.renderPrompts()" tabindex="0" role="button">
+              <i class="${c.icon}"></i>
+              <h3>${c.name}</h3>
+              <span>${c.count} prompts</span>
+            </div>`).join('')}
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <h2>Featured Prompts</h2>
+          <p>Hand-picked prompts trending in our community</p>
+          <div class="accent-line"></div>
+        </div>
+        <div class="prompts-grid">${trendingCards}</div>
+      </section>`;
+    // Start typewriter
+    const typed = document.getElementById('hero-typed');
+    if (typed) {
+      this.typewriter(typed, ['AI Prompts','Midjourney Art','ChatGPT Magic','Web Dev Tools','Photo Mastery'], 90, 2200);
+    }
+    this.initTilt();
+  },
+
+  /* ---- PROMPTS PAGE ---- */
+  renderPrompts() {
+    const content = document.getElementById('app-content');
+    // Show skeleton first
+    content.innerHTML = `<div class="section"><div class="section-header"><h2>Prompt Library</h2><p>Find the perfect AI prompt for any task</p><div class="accent-line"></div></div><div id="prompts-container"></div></div>`;
+    const container = document.getElementById('prompts-container');
+    this.showSkeleton(container);
+
+    // Simulate loading
+    setTimeout(() => {
+      this.renderPromptsContent(container);
+    }, 800);
+  },
+
+  renderPromptsContent(container) {
+    const allCats = ['all', ...new Set(PROMPTS.map(p=>p.category))];
+    let filtered = [...PROMPTS];
+
+    // Filter by category
+    if (this.state.activeCategory !== 'all') {
+      filtered = filtered.filter(p => p.category === this.state.activeCategory);
+    }
+    // Filter by search
+    if (this.state.searchQuery) {
+      const q = this.state.searchQuery.toLowerCase();
+      filtered = filtered.filter(p =>
+        p.title.toLowerCase().includes(q) ||
+        p.caption.toLowerCase().includes(q) ||
+        p.tags.some(t => t.toLowerCase().includes(q))
+      );
+    }
+    // Sort
+    if (this.state.sortBy === 'newest') filtered.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+    else if (this.state.sortBy === 'copied') filtered.sort((a,b) => this.getTotalCopies(b.id) - this.getTotalCopies(a.id));
+    else if (this.state.sortBy === 'favorited') filtered.sort((a,b) => {
+      const favA = this.isFav(a.id) ? 1 : 0;
+      const favB = this.isFav(b.id) ? 1 : 0;
+      return favB - favA || this.getTotalViews(b.id) - this.getTotalViews(a.id);
+    });
+
+    const chips = allCats.map(c => `<button class="chip ${this.state.activeCategory===c?'active':''}" onclick="App.state.activeCategory='${c}';App.renderPromptsContent(document.getElementById('prompts-container'))">${c === 'all' ? 'All' : c}</button>`).join('');
+
+    const cards = filtered.length ? filtered.map((p,i) => `
+      <div class="prompt-card fade-in" onclick="window.location.hash='#/prompt/${p.id}'" tabindex="0" role="button" aria-label="View ${p.title}">
+        <div class="card-images">
+          <img src="${p.images[0]}" alt="${p.title} example 1" loading="lazy">
+          <img src="${p.images[1]}" alt="${p.title} example 2" loading="lazy">
+        </div>
+        <div class="card-body">
+          <h3>${p.title}</h3>
+          <p class="card-caption">${p.caption}</p>
+          <p class="card-snippet">${p.prompt.substring(0, 100)}...</p>
+          <div class="card-tags">${p.tags.slice(0,3).map(t=>`<span>${t}</span>`).join('')}</div>
+          <div class="card-footer">
+            <div class="card-stats">
+              <span><i class="fas fa-copy"></i> ${this.getTotalCopies(p.id)}</span>
+              <span><i class="fas fa-eye"></i> ${this.getTotalViews(p.id)}</span>
+            </div>
+            <button class="fav-btn ${this.isFav(p.id)?'active':''}" onclick="event.stopPropagation();App.toggleFav(${p.id});App.renderPromptsContent(document.getElementById('prompts-container'))" aria-label="Toggle favorite">
+              <i class="fas fa-heart"></i>
+            </button>
+          </div>
+        </div>
+      </div>`).join('') : '<p style="text-align:center;color:var(--text-muted);padding:60px 0;font-size:1.1rem">No prompts found matching your search.</p>';
+
+    container.innerHTML = `
+      <div class="prompts-toolbar">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Search prompts by title, description, or tag..." value="${this.state.searchQuery}" oninput="App.state.searchQuery=this.value;App.renderPromptsContent(document.getElementById('prompts-container'))" aria-label="Search prompts">
+        </div>
+        <select class="sort-select" onchange="App.state.sortBy=this.value;App.renderPromptsContent(document.getElementById('prompts-container'))" aria-label="Sort prompts">
+          <option value="newest" ${this.state.sortBy==='newest'?'selected':''}>Newest</option>
+          <option value="copied" ${this.state.sortBy==='copied'?'selected':''}>Most Copied</option>
+          <option value="favorited" ${this.state.sortBy==='favorited'?'selected':''}>Most Favorited</option>
+        </select>
+      </div>
+      <div class="filter-chips">${chips}</div>
+      <div class="prompts-grid">${cards}</div>`;
+    this.initTilt();
+  },
+
+  /* ---- DETAIL PAGE ---- */
+  renderDetail(id) {
+    const p = PROMPTS.find(x => x.id === id);
+    if (!p) { window.location.hash = '#/prompts'; return; }
+    this.incrementViews(id);
+
+    const vars = this.parseVars(p.prompt);
+    const varInputs = vars.length ? `
+      <div class="var-section">
+        <h4><i class="fas fa-sliders-h"></i> Customize Variables</h4>
+        <div class="var-inputs">
+          ${vars.map(v => `<div class="var-input">
+            <label>${v.name}</label>
+            <input type="text" placeholder="Enter ${v.name}..." data-var="${v.name}" oninput="App.updatePromptPreview(${id})">
+          </div>`).join('')}
+        </div>
+      </div>` : '';
+
+    // Related prompts (same category, different id)
+    const related = PROMPTS.filter(x => x.category === p.category && x.id !== p.id);
+
+    const content = document.getElementById('app-content');
+    content.innerHTML = `
+      <div class="detail-page fade-in">
+        <button class="detail-back" onclick="history.back()"><i class="fas fa-arrow-left"></i> Back to Prompts</button>
+
+        <div class="carousel" id="detail-carousel">
+          <div class="carousel-track" id="carousel-track">
+            ${p.images.map(img => `<img src="${img}" alt="${p.title} example" loading="lazy">`).join('')}
+          </div>
+          <button class="carousel-btn prev" onclick="App.carouselPrev(${id})" aria-label="Previous image"><i class="fas fa-chevron-left"></i></button>
+          <button class="carousel-btn next" onclick="App.carouselNext(${id})" aria-label="Next image"><i class="fas fa-chevron-right"></i></button>
+          <div class="carousel-dots" id="carousel-dots">
+            ${p.images.map((_,i) => `<span class="${i===0?'active':''}" onclick="App.carouselGo(${id},${i})"></span>`).join('')}
+          </div>
+        </div>
+
+        <h1 class="detail-title">${p.title}</h1>
+        <div class="detail-meta">
+          <span class="tag">${p.category}</span>
+          ${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}
+        </div>
+        <div class="detail-creator">
+          <i class="fas fa-user-circle"></i> By <a href="${p.creator.link}" target="_blank" rel="noopener">${p.creator.name}</a>
+          ${!p.isOriginal ? `&nbsp;(Inspired by <a href="${p.originalCreator.link}" target="_blank" rel="noopener">${p.originalCreator.name}</a>)` : ''}
+        </div>
+
+        ${varInputs}
+
+        <div class="prompt-box" id="prompt-box-${id}">
+          <pre id="prompt-preview-${id}">${p.prompt}</pre>
+        </div>
+
+        <div class="detail-actions">
+          <button class="action-btn copy" id="copy-btn-${id}" onclick="App.copyPrompt(${id})"><i class="fas fa-copy"></i> Copy Prompt</button>
+          <button class="action-btn download" onclick="App.downloadImages(${id})"><i class="fas fa-download"></i> Download Photos</button>
+          <button class="action-btn fav ${this.isFav(id)?'active':''}" id="fav-btn-${id}" onclick="App.toggleFav(${id});this.classList.toggle('active')"><i class="fas fa-heart"></i> ${this.isFav(id)?'Favorited':'Favorite'}</button>
+          <button class="action-btn report" onclick="App.openReport(${id})"><i class="fas fa-flag"></i> Report</button>
+        </div>
+
+        <div class="detail-stats">
+          <span><i class="fas fa-copy"></i> ${this.getTotalCopies(id)} copies</span>
+          <span><i class="fas fa-eye"></i> ${this.getTotalViews(id)} views</span>
+          <span><i class="fas fa-heart"></i> ${this.isFav(id)?'In your favorites':'Not favorited'}</span>
+        </div>
+
+        ${related.length ? `
+        <div class="related-section">
+          <h3>Related Prompts</h3>
+          <div class="related-scroll">
+            ${related.map(r => `
+              <div class="related-card" onclick="window.location.hash='#/prompt/${r.id}'" tabindex="0" role="button">
+                <img src="${r.images[0]}" alt="${r.title}" loading="lazy">
+                <div class="rc-body">
+                  <h4>${r.title}</h4>
+                  <span><i class="fas fa-copy"></i> ${this.getTotalCopies(r.id)} copies</span>
+                </div>
+              </div>`).join('')}
+          </div>
+        </div>` : ''}
+      </div>`;
+    this.state.carouselIndex = 0;
+    // Touch swipe for carousel
+    this.initCarouselSwipe();
+  },
+
+  /* ---- CAROUSEL CONTROLS ---- */
+  carouselGo(id, idx) {
+    const p = PROMPTS.find(x=>x.id===id);
+    if (!p) return;
+    this.state.carouselIndex = Math.max(0, Math.min(idx, p.images.length - 1));
+    const track = document.getElementById('carousel-track');
+    if (track) track.style.transform = `translateX(-${this.state.carouselIndex * 100}%)`;
+    document.querySelectorAll('#carousel-dots span').forEach((d,i) => d.classList.toggle('active', i === this.state.carouselIndex));
+  },
+  carouselPrev(id) {
+    this.carouselGo(id, this.state.carouselIndex - 1);
+  },
+  carouselNext(id) {
+    const p = PROMPTS.find(x=>x.id===id);
+    this.carouselGo(id, this.state.carouselIndex + 1);
+  },
+  initCarouselSwipe() {
+    const carousel = document.getElementById('detail-carousel');
+    if (!carousel) return;
+    let startX = 0;
+    carousel.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, {passive:true});
+    carousel.addEventListener('touchend', e => {
+      const diff = startX - e.changedTouches[0].clientX;
+      const hash = window.location.hash;
+      const id = parseInt(hash.split('/')[2]);
+      if (Math.abs(diff) > 50) {
+        if (diff > 0) this.carouselNext(id);
+        else this.carouselPrev(id);
+      }
+    }, {passive:true});
+  },
+
+  /* ---- VARIABLE REPLACEMENT LIVE ---- */
+  updatePromptPreview(id) {
+    const p = PROMPTS.find(x=>x.id===id);
+    if (!p) return;
+    const values = {};
+    document.querySelectorAll(`[data-var]`).forEach(inp => {
+      values[inp.dataset.var] = inp.value;
+    });
+    const preview = document.getElementById(`prompt-preview-${id}`);
+    if (preview) {
+      preview.innerHTML = this.replaceVars(p.prompt, values);
+    }
+  },
+
+  /* ---- COPY PROMPT ---- */
+  copyPrompt(id) {
+    const p = PROMPTS.find(x=>x.id===id);
+    if (!p) return;
+    const values = {};
+    document.querySelectorAll(`[data-var]`).forEach(inp => {
+      values[inp.dataset.var] = inp.value;
+    });
+    const text = this.replaceVarsPlain(p.prompt, values);
+    navigator.clipboard.writeText(text).then(() => {
+      this.incrementCopies(id);
+      const btn = document.getElementById(`copy-btn-${id}`);
+      if (btn) { btn.innerHTML = '<i class="fas fa-check"></i> Copied!'; setTimeout(()=>{ btn.innerHTML = '<i class="fas fa-copy"></i> Copy Prompt'; }, 2000); }
+      this.toast('Prompt copied to clipboard!', 'success');
+    }).catch(() => {
+      this.toast('Failed to copy. Please select and copy manually.', 'error');
+    });
+  },
+
+  /* ---- DOWNLOAD IMAGES ---- */
+  downloadImages(id) {
+    const p = PROMPTS.find(x=>x.id===id);
+    if (!p) return;
+    p.images.forEach((img, i) => {
+      const a = document.createElement('a');
+      a.href = img;
+      a.download = `${p.title.replace(/\s+/g,'_')}_${i+1}.jpg`;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    });
+    this.toast('Download started for example photos!', 'info');
+  },
+
+  /* ---- CONTACT PAGE ---- */
+  renderContact() {
+    const content = document.getElementById('app-content');
+    content.innerHTML = `
+      <div class="page-container fade-in">
+        <h1>Contact Us</h1>
+        <p>Have a question, suggestion, or found a bug? Reach out and we will get back to you as soon as possible.</p>
+
+        <div class="contact-info-grid">
+          <div class="contact-card">
+            <i class="fas fa-phone"></i>
+            <div><strong>Phone</strong>0775048455</div>
+          </div>
+          <div class="contact-card">
+            <i class="fas fa-envelope"></i>
+            <div><strong>Email</strong>chat.dmkaawya@gmail.com</div>
+          </div>
+          <div class="contact-card">
+            <i class="fab fa-whatsapp"></i>
+            <div><strong>WhatsApp</strong>Direct message anytime</div>
+          </div>
+        </div>
+
+        <h2>Send a Message</h2>
+        <form onsubmit="App.submitContact(event)">
+          <div class="form-row">
+            <div class="form-group"><label>Your Name</label><input type="text" id="ct-name" required placeholder="Your name"></div>
+            <div class="form-group"><label>Your Email</label><input type="email" id="ct-email" required placeholder="you@example.com"></div>
+          </div>
+          <div class="form-group"><label>Subject</label>
+            <select id="ct-subject" required>
+              <option value="">Select subject</option>
+              <option>General Inquiry</option>
+              <option>Bug Report</option>
+              <option>Prompt Suggestion</option>
+              <option>Partnership</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Message</label><textarea id="ct-message" required placeholder="Tell us what's on your mind..."></textarea></div>
+          <button type="submit" class="btn-primary" style="width:100%;justify-content:center"><i class="fab fa-whatsapp"></i> Send via WhatsApp</button>
+        </form>
+      </div>`;
+  },
+
+  submitContact(e) {
+    e.preventDefault();
+    const name = document.getElementById('ct-name').value;
+    const email = document.getElementById('ct-email').value;
+    const subject = document.getElementById('ct-subject').value;
+    const message = document.getElementById('ct-message').value;
+    let text = `📩 *Vezlo AI Prompt — Contact Message*\n\n`;
+    text += `👤 *Name:* ${name}\n`;
+    text += `📧 *Email:* ${email}\n`;
+    text += `📋 *Subject:* ${subject}\n\n`;
+    text += `💬 *Message:*\n${message}`;
+    window.open(`https://wa.me/94775048455?text=${encodeURIComponent(text)}`, '_blank');
+    this.toast('Redirecting to WhatsApp!', 'success');
+  },
+
+  /* ---- ABOUT PAGE ---- */
+  renderAbout() {
+    const content = document.getElementById('app-content');
+    content.innerHTML = `
+      <div class="page-container fade-in">
+        <h1>About Vezlo AI Prompt</h1>
+        <p>Vezlo AI Prompt is a curated platform where creators, developers, designers, and AI enthusiasts discover, share, and customize high-quality AI prompts for the tools they love.</p>
+
+        <h2>Our Mission</h2>
+        <p>We believe the right prompt can unlock extraordinary results. Our mission is to build the most useful, community-driven AI prompt library on the internet — one where every prompt is tested, reviewed, and ready to use.</p>
+
+        <h2>What We Offer</h2>
+        <ul style="list-style:disc;padding-left:24px;margin-bottom:20px">
+          <li style="color:var(--text-secondary);margin-bottom:10px"><strong style="color:var(--text-primary)">Curated Quality</strong> — Every prompt is reviewed for clarity, usefulness, and creativity before being featured.</li>
+          <li style="color:var(--text-secondary);margin-bottom:10px"><strong style="color:var(--text-primary)">Smart Variables</strong> — Prompts with customizable placeholders let you tailor outputs in real time before copying.</li>
+          <li style="color:var(--text-secondary);margin-bottom:10px"><strong style="color:var(--text-primary)">Community-First</strong> — Built by prompt engineers, for prompt engineers. Submit your own prompts and get credited.</li>
+          <li style="color:var(--text-secondary);margin-bottom:10px"><strong style="color:var(--text-primary)">Cross-Platform</strong> — Works on any device. Install as an app on your phone for instant access anywhere.</li>
+        </ul>
+
+        <h2>Built With Passion</h2>
+        <p>Vezlo AI Prompt is designed and developed by the <a href="https://vezlo-web.vercel.app/" target="_blank" rel="noopener" class="accent-link">Vezlo</a> team. We are a small, dedicated group of developers and designers passionate about making AI accessible and practical for everyone.</p>
+        <p style="margin-top:20px">Have questions or want to collaborate? <a href="#/contact" class="accent-link">Get in touch</a>.</p>
+      </div>`;
+  },
+
+  /* ---- CREDITS PAGE ---- */
+  renderCredits() {
+    const content = document.getElementById('app-content');
+    const contributors = [
+      {initials:"AS",name:"Aria Stormfield",role:"Midjourney Prompt Author"},
+      {initials:"DC",name:"Dev Chandra",role:"Web Dev Prompt Author"},
+      {initials:"KN",name:"Kai Nakamura",role:"Code Review Prompt Author"},
+      {initials:"EV",name:"Elena Voss",role:"Photography Prompt Author"},
+      {initials:"MR",name:"Marcus Reid",role:"Business Prompt Author"},
+      {initials:"ZP",name:"Zara Pixel",role:"Neon Art Prompt Author"},
+      {initials:"SO",name:"Sam Okafor",role:"React Component Author"},
+      {initials:"JT",name:"Jiro Tanaka",role:"Street Photography Author"},
+      {initials:"LM",name:"Luna Marquez",role:"Creative Writing Author"},
+      {initials:"OK",name:"Oliver Kraft",role:"Product Showcase Author"},
+      {initials:"PS",name:"Priya Sharma",role:"API Docs Prompt Author"},
+      {initials:"SR",name:"Sofia Reyes",role:"Golden Hour Author"}
+    ];
+    content.innerHTML = `
+      <div class="page-container fade-in">
+        <h1>Credits</h1>
+        <p>Vezlo AI Prompt would not exist without the talented contributors who create and share their prompts. We extend our deepest gratitude to each one of them.</p>
+
+        <h2>Prompt Authors</h2>
+        <div class="credits-list">
+          ${contributors.map(c => `
+            <div class="credit-item">
+              <div class="credit-avatar">${c.initials}</div>
+              <div class="credit-info"><h4>${c.name}</h4><span>${c.role}</span></div>
+            </div>`).join('')}
+        </div>
+
+        <h2>Design & Development</h2>
+        <p>Platform designed and developed by <a href="https://vezlo-web.vercel.app/" target="_blank" rel="noopener" class="accent-link">Vezlo</a>. Built with modern web technologies including semantic HTML5, CSS3 animations, and vanilla JavaScript for maximum performance and accessibility.</p>
+
+        <h2>Assets & Resources</h2>
+        <ul style="list-style:disc;padding-left:24px;margin-bottom:20px">
+          <li style="color:var(--text-secondary);margin-bottom:8px"><strong style="color:var(--text-primary)">Typography</strong> — Orbitron by Matt McInerney, DM Sans by Indian Type Foundry (Google Fonts)</li>
+          <li style="color:var(--text-secondary);margin-bottom:8px"><strong style="color:var(--text-primary)">Icons</strong> — Font Awesome 6 Free</li>
+          <li style="color:var(--text-secondary);margin-bottom:8px"><strong style="color:var(--text-primary)">Placeholder Images</strong> — Picsum Photos (Lorem Ipsum for images)</li>
+        </ul>
+
+        <p>Want to contribute your own prompts? <a href="#/contact" class="accent-link">Contact us</a> to become an author.</p>
+      </div>`;
+  },
+
+  /* ---- TERMS PAGE ---- */
+  renderTerms() {
+    const content = document.getElementById('app-content');
+    content.innerHTML = `
+      <div class="page-container terms-content fade-in">
+        <h1>Terms, Services & Rules</h1>
+        <p>Last updated: January 2026. By using Vezlo AI Prompt, you agree to the following terms and guidelines.</p>
+
+        <h2>1. Acceptable Use</h2>
+        <ul>
+          <li><strong>Respect copyright.</strong> Only submit prompts you created or have explicit permission to share. If your prompt is inspired by or adapted from someone else's work, you must credit the original creator.</li>
+          <li><strong>No harmful content.</strong> Do not submit prompts designed to generate illegal, hateful, violent, or sexually explicit content.</li>
+          <li><strong>No spam.</strong> Do not flood the platform with repetitive, low-quality, or promotional submissions.</li>
+          <li><strong>No impersonation.</strong> Do not misrepresent yourself as another person or entity.</li>
+        </ul>
+
+        <h2>2. Prompt Ownership</h2>
+        <ul>
+          <li><strong>Original work</strong> remains the intellectual property of the creator. By submitting, you grant Vezlo a non-exclusive license to display and distribute the prompt on our platform.</li>
+          <li><strong>Copied/Inspired prompts</strong> must clearly credit the original source. Vezlo reserves the right to remove uncredited work.</li>
+        </ul>
+
+        <h2>3. Platform Rules</h2>
+        <ul>
+          <li>Do not attempt to exploit, scrape, or overload the platform's infrastructure.</li>
+          <li>Do not share personal information of others without consent.</li>
+          <li>Report bugs responsibly through the <a href="#/contact" class="accent-link">contact page</a> rather than exploiting them.</li>
+          <li>Follow all applicable local and international laws when using AI-generated outputs.</li>
+        </ul>
+
+        <h2>4. Disclaimer</h2>
+        <ul>
+          <li>AI prompt results may vary. Vezlo does not guarantee specific outcomes from any prompt.</li>
+          <li>Users are responsible for reviewing AI-generated content before publishing or commercializing it.</li>
+          <li>Vezlo is not liable for any damages arising from the use of prompts found on this platform.</li>
+        </ul>
+
+        <h2>5. Reporting & Enforcement</h2>
+        <ul>
+          <li>If you find a prompt that violates these rules, use the <strong>Report</strong> button on that prompt's detail page.</li>
+          <li>Violations may result in prompt removal. Repeated violations may result in being banned from submitting.</li>
+          <li>Appeals can be sent via our <a href="#/contact" class="accent-link">contact page</a>.</li>
+        </ul>
+
+        <h2>6. Changes to Terms</h2>
+        <p>We may update these terms periodically. Continued use of the platform after changes constitutes acceptance of the revised terms.</p>
+      </div>`;
+  }
+};
+
+/* ============================================
+   INIT ON DOM READY
+   ============================================ */
+document.addEventListener('DOMContentLoaded', () => App.init());
+
+/* Keyboard accessibility for theme toggle & hamburger */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    if (e.target.classList.contains('theme-toggle')) App.toggleTheme();
+    if (e.target.classList.contains('nav-hamburger')) App.toggleMobile();
+  }
+});
+</script>
+</body>
+</html>
